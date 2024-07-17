@@ -4,9 +4,8 @@ on:
   pull_request:
     types: [closed]
 
-
 jobs:
-  compare-files:
+  compare-files-after-pr-merge:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,11 +13,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
 
       - name: Check if PR is merged
         id: check_pr_merged
@@ -53,3 +47,7 @@ jobs:
             echo "Changes in $file:"
             git diff $BASE_COMMIT $HEAD_COMMIT -- $file
           done < changed_files.txt
+
+      - name: git diff
+        run: |
+          echo "$(git diff --name-only "$BASE_COMMIT..origin/develop" -- HEAD -- "resources/*.properties" | grep -v "_" | grep -v "tmp/")
