@@ -42,4 +42,5 @@ jobs:
 
       - name: git diff
         run: |
+          BASE_COMMIT=${{ steps.get_commits.outputs.base_commit }}
           git diff --name-only "$BASE_COMMIT..origin/develop" -- "resources/*.properties" | grep -v "_" | grep -v "tmp/"
