@@ -1,0 +1,53 @@
+name: Compare PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+
+jobs:
+  compare-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Check if PR is merged
+        id: check_pr_merged
+        run: | 
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
+            echo "This pull request is not merged. Exiting."
+            exit 0
+          fi
+
+      - name: Get base and head commits
+        id: get_commits
+        run: |
+          echo "Base commit: ${{ github.event.pull_request.base.sha }}"
+          echo "Head commit: ${{ github.event.pull_request.head.sha }}"
+          echo "::set-output name=base_commit::${{ github.event.pull_request.base.sha }}"
+          echo "::set-output name=head_commit::${{ github.event.pull_request.head.sha }}"
+
+      - name: Compare files
+        run: |
+          BASE_COMMIT=${{ steps.get_commits.outputs.base_commit }}
+          HEAD_COMMIT=${{ steps.get_commits.outputs.head_commit }}
+          git diff --name-only $BASE_COMMIT $HEAD_COMMIT > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+
+      - name: Display file differences
+        run: |
+          BASE_COMMIT=${{ steps.get_commits.outputs.base_commit }}
+          HEAD_COMMIT=${{ steps.get_commits.outputs.head_commit }}
+          while IFS= read -r file; do
+            echo "Changes in $file:"
+            git diff $BASE_COMMIT $HEAD_COMMIT -- $file
+          done < changed_files.txt
