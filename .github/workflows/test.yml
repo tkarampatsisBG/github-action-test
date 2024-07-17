@@ -1,0 +1,30 @@
+name: Test fetching the last commit before a merged PR
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  lokalise-push-master:
+    runs-on: arc-runner-set-small
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout develop branch
+        run: git checkout develop
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Compare files changed before PR merge
+        run: echo "${{ github.event.pull_request.base.ref }} and ${{ github.event.pull_request.base.sha }}"
+
+      - name: Compare files changed before PR merge
+        run: echo "{{ github.event.pull_request.head.sha }} and ${{ github.sha }}"
+
+
+
