@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -20,7 +22,7 @@ jobs:
 
       - name: Check if PR is merged
         id: check_pr_merged
-        run: | 
+        run: |
           echo "PR merged: ${{ github.event.pull_request.merged }}"
           if [ "${{ github.event.pull_request.merged }}" != "true" ]; then
             echo "This pull request is not merged. Exiting."
