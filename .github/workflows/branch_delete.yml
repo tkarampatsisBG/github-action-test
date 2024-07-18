@@ -1,0 +1,25 @@
+name: Delete branch
+
+on:
+  delete:
+    branches:
+      - '*'
+
+jobs:
+  lokalise-delete-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Deleted Branch
+        run: |
+          DELETED_BRANCH=${{ github.head_ref }}
+          BRANCH_NAME=${DELETED_BRANCH#refs/heads/}
+          echo "$DELETED_BRANCH"
+          echo "$BRANCH_NAME"
