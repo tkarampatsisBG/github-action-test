@@ -18,6 +18,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - name: Dump step context
+        env:
+          STEP_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEP_CONTEXT"
+
       - name: Git branch all
         run: git branch --all
 
