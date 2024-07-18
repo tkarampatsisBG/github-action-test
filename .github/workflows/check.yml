@@ -1,0 +1,31 @@
+name: Check no diff
+
+on: [pull_request]
+
+jobs:
+  check-no-diff:
+    runs-on: arc-runner-set-small
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Make change
+        run: touch new_file.txt
+
+      - name: Make change
+        run: echo "hello" >> file.txt
+
+      - name: git diff
+        run: git diff --name-only --exit-code || true
+
+      - name: git add
+        run: git add -N .
+
+      - name: git diff
+        run: git diff --name-only --exit-code || true
+
+      - name: Git diff
+        run: git diff --exit-code
