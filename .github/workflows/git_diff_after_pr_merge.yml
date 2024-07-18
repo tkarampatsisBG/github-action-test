@@ -49,3 +49,10 @@ jobs:
         run: |
           BASE_COMMIT=${{ steps.get_commits.outputs.base_commit }}
           git diff "origin/develop..$BASE_COMMIT" -- "resources/*.properties" | grep -v "_" | grep -v "tmp/"
+
+      - name: echo
+        run: |
+          DELETED_BRANCH=${{ github.event.ref }}
+          BRANCH_NAME=${DELETED_BRANCH#refs/heads/}
+          echo "$DELETED_BRANCH"
+          echo "$BRANCH_NAME"
