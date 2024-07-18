@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   check-no-diff:
-    runs-on: arc-runner-set-small
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
