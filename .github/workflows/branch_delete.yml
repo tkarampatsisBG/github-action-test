@@ -42,5 +42,5 @@ jobs:
       - name: Git diff
         run: git diff --name-only "${{ github.event.pull_request.base.sha }}..origin/develop" -- "**/locales/*.properties"
 
-      - name: Github event ref
-        run: ${{ github.event.ref }}
+      - name: Github head ref
+        run: ${{ github.head_ref }}
