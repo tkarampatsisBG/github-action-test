@@ -30,7 +30,7 @@ jobs:
 
       - name: Deleted Branch
         run: |
-          BRANCH_NAME=${{ steps.get_commits.outputs.base_commit }}
+          BRANCH_NAME=${{ github.event.pull_request.base.sha }}
           echo $BRANCH_NAME
 
       - name: Git branch all
@@ -40,4 +40,4 @@ jobs:
         run: git diff --name-only origin/develop -- "**/locales/*.properties"
 
       - name: Git diff
-        run: git diff --name-only "${{ steps.get_commits.outputs.base_commit }}..origin/develop" -- "**/locales/*.properties"
+        run: git diff --name-only "${{ github.event.pull_request.base.sha }}..origin/develop" -- "**/locales/*.properties"
