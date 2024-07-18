@@ -17,7 +17,32 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - name: Git branch all
+        run: git branch --all
+
+        # This step is to ensure that the branches exist locally
+        # and no modification is required in the script, for using remotes/origin
+      - name: Create locally the branch that will be used
+        run: |
+          git checkout -b develop origin/develop
+          git checkout ${{ github.event.ref }}
+
       - name: Deleted Branch
         run: |
           BRANCH_NAME=${{ github.event.ref }}
-          echo "$BRANCH_NAME"
+          echo $BRANCH_NAME
+
+      - name: Git status
+        run: git status
+
+      - name: Git branch all
+        run: git branch --all
+
+      - name: Git diff
+        run: git diff --name-only origin/develop -- "**/locales/*.properties"
+
+      - name: Git diff
+        run: git diff --name-only develop
+
+      - name: Git diff
+        run: git diff --name-only origin/develop
