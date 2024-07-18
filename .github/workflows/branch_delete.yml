@@ -20,13 +20,6 @@ jobs:
       - name: Git branch all
         run: git branch --all
 
-        # This step is to ensure that the branches exist locally
-        # and no modification is required in the script, for using remotes/origin
-      - name: Create locally the branch that will be used
-        run: |
-          git checkout -b develop origin/develop
-          git checkout ${{ github.event.ref }}
-
       - name: Deleted Branch
         run: |
           BRANCH_NAME=${{ github.event.ref }}
@@ -40,9 +33,3 @@ jobs:
 
       - name: Git diff
         run: git diff --name-only origin/develop -- "**/locales/*.properties"
-
-      - name: Git diff
-        run: git diff --name-only develop
-
-      - name: Git diff
-        run: git diff --name-only origin/develop
