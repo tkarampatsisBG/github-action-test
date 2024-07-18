@@ -19,7 +19,7 @@ jobs:
 
       - name: Dump GitHub context
         run: |
-          BRANCH_NAME=${{ github.event.ref }}
+          BRANCH_NAME=${{ github.head_ref }}
           echo $BRANCH_NAME
           ./echo_arguments.sh $BRANCH_NAME
 
