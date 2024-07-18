@@ -62,7 +62,7 @@ jobs:
 
       - name: echo
         run: |
-          DELETED_BRANCH=${{ github.base.head.ref }}
+          DELETED_BRANCH=${{ github.head_ref }}
           BRANCH_NAME=${DELETED_BRANCH#refs/heads/}
           echo "$DELETED_BRANCH"
           echo "$BRANCH_NAME"
