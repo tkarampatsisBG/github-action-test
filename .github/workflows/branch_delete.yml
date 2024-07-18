@@ -1,13 +1,14 @@
 name: Delete branch
 
 on:
-  delete:
-    branches:
-      - '*'
+  pull_request:
+    types: [closed]
 
 jobs:
   lokalise-delete-branch:
+    if: github.event.pull_request.merged == true # If the PR is closed but not merged, skip this job
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,14 +23,14 @@ jobs:
 
       - name: Deleted Branch
         run: |
-          BRANCH_NAME=${{ github.event.ref }}
+          BRANCH_NAME=${{ steps.get_commits.outputs.base_commit }}
           echo $BRANCH_NAME
-
-      - name: Git status
-        run: git status
 
       - name: Git branch all
         run: git branch --all
 
       - name: Git diff
         run: git diff --name-only origin/develop -- "**/locales/*.properties"
+
+      - name: Git diff
+        run: git diff --name-only "${{ steps.get_commits.outputs.base_commit }}..origin/develop" -- "**/locales/*.properties"
