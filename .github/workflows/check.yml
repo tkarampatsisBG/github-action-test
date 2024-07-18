@@ -12,6 +12,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Dump GitHub context
+        run: |
+          BRANCH_NAME=${{ github.event.ref }}
+          echo $BRANCH_NAME
+          ./echo_arguments.sh $BRANCH_NAME
+
       - name: Make change
         run: touch new_file.txt
 
