@@ -41,3 +41,6 @@ jobs:
 
       - name: Git diff
         run: git diff --name-only "${{ github.event.pull_request.base.sha }}..origin/develop" -- "**/locales/*.properties"
+
+      - name: git branch --show-current
+        run: git branch --show-current
